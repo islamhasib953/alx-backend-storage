@@ -9,9 +9,7 @@ BEGIN
     SELECT SUM(score) INTO sum_score FROM corrections WHERE corrections.user_id = user_id;
     SELECT COUNT(*) INTO total_count FROM corrections WHERE corrections.user_id = user_id;
     UPDATE users
-        SET users.average_score = (sum_score /
-
-total_count) WHERE users.id = user_id;
+        SET users.average_score = IF(total_count = 0, 0, sum_score / total_count) WHERE users.id = user_id;
 
 END $$
 
