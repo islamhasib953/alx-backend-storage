@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cat $1 | mongosh -u "root" -p "root" --authenticationDatabase "admin"
+cat $1 | mongosh -u "root" -p "root" --authenticationDatabase "admin" "my_db"
