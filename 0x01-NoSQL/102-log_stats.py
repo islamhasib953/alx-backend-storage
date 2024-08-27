@@ -4,38 +4,30 @@ NoSQL -Python
 """
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     from pymongo import MongoClient
 
-    client = MongoClient('mongodb://127.0.0.1:27017')
+    client = MongoClient("mongodb://127.0.0.1:27017")
     nginx = client.logs.nginx
 
-    print(nginx.count_documents({}), 'logs')
+    print(nginx.count_documents({}), "logs")
 
-    print('Methods:')
+    print("Methods:")
 
-    methods = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+    methods = ["GET", "POST", "PUT", "PATCH", "DELETE"]
 
     for meth in methods:
-        counted = nginx.count_documents({'method': meth})
-        print('\tmethod {}: {}'.format(meth, counted))
+        counted = nginx.count_documents({"method": meth})
+        print("\tmethod {}: {}".format(meth, counted))
 
-    status_check_count = nginx.count_documents({'method': 'GET',
-                                                'path': '/status'})
-    print('{} status check'.format(status_check_count))
+    status_check_count = nginx.count_documents({"method": "GET", "path": "/status"})
+    print("{} status check".format(status_check_count))
 
-    print('IPs:')
+    print("IPs:")
     pipeline = [
-        {'$group':
-            {
-                '_id': '$ip',
-                'count': {'$sum': 1}
-            }
-         },
-        {'$sort':
-            {'count': -1}
-         },
-        {'$limit': 10}
+        {"$group": {"_id": "$ip", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 10},
     ]
     ip_count = nginx.aggregate(pipeline)
 
