@@ -7,17 +7,18 @@ from typing import Union, Callable, Optional
 from functools import wraps
 
 
-def count_calls(func: Callable) -> Callable:
+def count_calls(method: Callable) -> Callable:
     """define the decorator that increments the count
     for that key every time the method is called"""
-    key = func.__qualname__
+    key = method.__qualname__
 
-    @wraps(func)
-    def wraper(self, *args, **kwargs):
+    @wraps(method)
+    def wrapper(self, *args, **kwargs):
+        """wrap the decorated function and return the wrapper"""
         self._redis.incr(key)
-        return func(self, *args, **kwargs)
+        return method(self, *args, **kwargs)
 
-    return wraper
+    return wrapper
 
 
 class Cache:
